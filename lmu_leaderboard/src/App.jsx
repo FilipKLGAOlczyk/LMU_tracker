@@ -1,3 +1,4 @@
+import './App.css';
 import { useState } from 'react';
 import playerData from '../../data/player_data.json';
 
@@ -28,7 +29,7 @@ const [filter,setFilter] = useState({track: '', car: ''});
     
 
   return (
-    <div>
+    <div className="App">
       <div>
         <h1>LMU Leaderboard</h1>
         <p>This was made for Yoji CREW!</p>

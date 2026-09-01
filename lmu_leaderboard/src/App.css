@@ -1,0 +1,100 @@
+h1 {
+    color: hsl(0, 95%, 100%);
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    text-align: center;
+}
+body {
+    display: flex;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: hsl(0, 95%, 100%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: hsl(0, 0%, 10%);
+    padding: 1rem;
+}
+div.App{
+    background: linear-gradient(45deg, hsl(0, 0%, 10%), hsl(284, 61.3%, 53.5%));
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0 1rem hsl(284 61.3% 63.5%);
+    display: flex;
+    flex-direction: column;
+}
+p{
+    color: hsl(0, 95%, 100%);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+form {
+    display: flex;
+    font-size: 1.2rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+select {
+    background: linear-gradient(to right, hsl(0, 0%, 10%), hsl(0,0%,20%), hsl(0, 0%, 10%));
+    color: hsl(284, 61.3%, 63.5%);
+    border: 0.1rem solid hsl(284, 61.3%, 63.5%);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-inline: 0.5rem;
+}
+select:focus {
+    outline: none;
+    background-color: hsl(284, 61.3%, 53.5%);
+    border-color: hsl(0, 0%, 10%);
+    color: hsl(0, 0%, 10%);
+    box-shadow: 0 0 0.5rem hsl(284, 61.3%, 63.5%);
+}
+select option {
+    background-color: hsl(0, 0%, 10%);
+    color: hsl(284, 61.3%, 63.5%);
+}
+select:hover {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    background: linear-gradient(to right, hsl(284, 61.3%, 63.5%), hsl(284, 61.3%, 53.5%));
+    border-color: hsl(0, 0%, 10%);
+    color: hsl(0, 0%, 10%);
+}
+
+button {
+    background: linear-gradient(to right, hsl(0, 0%, 10%), hsl(0,0%,20%), hsl(0, 0%, 10%));
+    color: hsl(284, 61.3%, 63.5%);
+    border: 0.1rem solid hsl(284, 61.3%, 63.5%);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    padding-inline: 1rem;
+    font-size: 1rem;
+    margin-inline: 0.5rem;
+    cursor: pointer;
+}
+button:hover {
+    transition: all 0.3s ease-in-out    ;
+    background: linear-gradient(to right, hsl(284, 61.3%, 63.5%), hsl(284, 61.3%, 53.5%));
+    border-color: hsl(0, 0%, 10%);
+    color: hsl(0, 0%, 10%);
+}
+div.leaderboard {
+    margin-top: 0.5rem;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+}
+th, td {
+    border-bottom: 0.2rem solid hsl(0, 0%, 10%);
+    padding: 0.5rem;
+    text-align: center;
+}

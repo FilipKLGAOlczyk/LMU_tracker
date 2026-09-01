@@ -3,10 +3,11 @@ const Leaderboard = ({ filteredPlayers }) => {
 
 
   return (
-    <div>
+    <div className="leaderboard">
         <table>
             <thead>
                 <tr>
+                    <th>Rank</th>
                     <th>Name</th>
                     <th>Track</th>
                     <th>Car</th>
@@ -14,8 +15,9 @@ const Leaderboard = ({ filteredPlayers }) => {
                 </tr>
             </thead>
             <tbody>
-                {filteredPlayers.map(player => (
+                {filteredPlayers.map((player, index) => (
                     <tr key={player.id}>
+                        <td>{index + 1}</td>
                         <td>{player.name}</td>
                         <td>{player.track}</td>
                         <td>{player.car}</td>
