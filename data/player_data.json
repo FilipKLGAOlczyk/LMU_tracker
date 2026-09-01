@@ -1,9 +1,34 @@
 {
-    "player_data": 
-    {
-        "name": "John Doe",
-        "track": "SPA",
-        "car": "car A",
-        "avg_five": "2:20:000"
-    }
+    "player_data": [
+        {
+            "name": "John Doe",
+            "track": "SPA",
+            "car": "car A",
+            "avg_five": "2:20:000"
+        },
+        {
+            "name": "Jane Smith",
+            "track": "MONZA",
+            "car": "car B",
+            "avg_five": "2:25:000"
+        },
+        {
+            "name": "Alice Johnson",
+            "track": "SILVERSTONE",
+            "car": "car C",
+            "avg_five": "2:30:000"
+        },
+        {
+            "name": "Bob Brown",
+            "track": "MONZA",
+            "car": "car D",
+            "avg_five": "2:35:000"
+        },
+        {
+            "name": "Charlie Davis",
+            "track": "SPA",
+            "car": "car E",
+            "avg_five": "2:40:000"
+        }
+    ]
 }
