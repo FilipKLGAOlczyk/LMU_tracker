@@ -26,7 +26,15 @@ const [filter,setFilter] = useState({track: '', car: ''});
             (filter.car ? player.car === filter.car : true)
         );
     });
-    
+  const sortedPlayers = [...filteredPlayers].sort((a, b) => {
+
+    const timeToMs = (time) => {
+      const [minutes, seconds, miliseconds] = time.split(':').map(Number);
+      return (minutes * 60 + seconds) * 1000 + miliseconds;
+    }
+    return timeToMs(a.avg_five) - timeToMs(b.avg_five);
+  });
+
 
   return (
     <div className="App">
@@ -35,7 +43,7 @@ const [filter,setFilter] = useState({track: '', car: ''});
         <p>This was made for Yoji CREW!</p>
       </div>
       <Filter filter={filter} onFilterChange={handleFilterChange} />
-      <Leaderboard filteredPlayers={filteredPlayers} />
+      <Leaderboard filteredPlayers={sortedPlayers} />
     </div>
 
   );

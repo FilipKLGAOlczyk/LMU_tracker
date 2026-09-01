@@ -22,13 +22,13 @@
             "name": "Bob Brown",
             "track": "MONZA",
             "car": "car D",
-            "avg_five": "2:35:000"
+            "avg_five": "2:25:020"
         },
         {
             "name": "Charlie Davis",
             "track": "SPA",
             "car": "car E",
-            "avg_five": "2:40:000"
+            "avg_five": "2:10:000"
         }
     ]
 }
