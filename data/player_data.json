@@ -29,6 +29,12 @@
             "track": "SPA",
             "car": "car E",
             "avg_five": "2:10:000"
+        },
+        {
+            "name": "Filip Kolega",
+            "track": "Monza Curva Grande Circuit",
+            "car": "Team WRT 2026 #32:WEC",
+            "avg_five": "1:44:596"
         }
     ]
 }
