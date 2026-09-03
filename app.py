@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
 import time
-import json
 import os
 
-from tracker_api.pyLMUSharedMemory import lmu_data as api
 
-JSON_FILEPATH = './data/player_data.json'
+
+from dotenv import load_dotenv
+from tracker_api.pyLMUSharedMemory import lmu_data as api
+from supabase import create_client
+
+
+load_dotenv()
+
+supabase_url = os.getenv("supabase_url")
+supabase_key = os.getenv("supabase_key")
+
+if not supabase_url or not supabase_key:
+    raise ValueError("Supabase URL or key is not set in the environment variables.")
+
+supabase = create_client(supabase_url, supabase_key)
+
+
 
 last_lap_times = []
 best_average_five = None
@@ -21,34 +35,27 @@ def format_time_to_string(seconds):
     # Teraz zadziała poprawny format: "Minuty:Sekundy:Milisekundy"
     return f"{minutes}:{seconds_int:02d}:{milliseconds:03d}"
 
-def save_player_data_to_json(driver, track, car, best_average_five):
+def save_player_data_to_cloud(driver, track, car_class, car, best_average_five):
     formatted_time = format_time_to_string(best_average_five)
     
-    # 1. Nazywamy to new_record, żeby nie pomieszać z całą bazą
-    new_record = {
-        'name': driver,  # Zmieniłem na 'name', bo tak masz w React w pliku leaderboard.jsx
-        'track': track,
-        'car': car,
-        'avg_five': formatted_time # Zmieniłem na 'avg_five', bo tak masz w Reaccie
-    }
+    try:
+        response = supabase.table("leaderboard").upsert({
+            "name": driver,
+            "track": track,
+            "class": car_class,
+            "car": car,
+            "avg_five": formatted_time
+        }).execute()
+        
+        if response.status_code in [200, 201]:
+            print(f"Zapisano dane do Supabase: {response.data}")
+        else:
+            print(f"Błąd podczas zapisywania danych do Supabase: {response.status_code}, {response.data}")
+    except Exception as e:
+        print(f"Wystąpił błąd podczas zapisywania danych do Supabase: {e}")
 
-    # Główna struktura bazy
-    data = {"player_data": []}
-    
-    # 2. Sprawdzamy, czy plik ISTNIEJE (bez 'not')
-    if os.path.exists(JSON_FILEPATH):
-        with open(JSON_FILEPATH, 'r', encoding='utf-8') as json_file:
-            try:
-                data = json.load(json_file)
-            except json.JSONDecodeError:
-                pass
-    
-    # Dodajemy nowy rekord do bazy
-    data["player_data"].append(new_record)
-
-    with open(JSON_FILEPATH, 'w', encoding='utf-8') as json_file:
-        json.dump(data, json_file, indent=4, ensure_ascii=False)
-        print(f"Zapisano dane do pliku JSON: {JSON_FILEPATH}")
+    finally:
+        pass
 
 def track_game_data():
     global current_lap_number, is_current_lap_valid, best_average_five
@@ -89,10 +96,11 @@ def track_game_data():
                         print(f"Czyste okrążenie: {last_lap_time:.3f} s")
                         driver_name = player_scoring.mDriverName.decode('windows-1252', errors='ignore').split('\x00')[0]
                         car_name = player_scoring.mVehicleName.decode('windows-1252', errors='ignore').split('\x00')[0]
+                        class_name = player_scoring.mVehicleClass.decode('windows-1252', errors='ignore').split('\x00')[0]
                         track_name = scoring.scoringInfo.mTrackName.decode('windows-1252', errors='ignore').split('\x00')[0]
                         
                         # 3. Uporządkowana kolejność wysyłania argumentów
-                        process_new_lap(last_lap_time, driver_name, track_name, car_name)
+                        process_new_lap(last_lap_time, driver_name, track_name, class_name, car_name)
                     else:
                         print(f"Okrążenie nieważne: {last_lap_time:.3f} s. Reset serii.")
                         last_lap_times.clear()
@@ -106,7 +114,7 @@ def track_game_data():
         time.sleep(0.05)
 
 # Odbiera parametry w tej samej kolejności, w której zostały wysłane
-def process_new_lap(lap_time, driver_name, track_name, car_name):
+def process_new_lap(lap_time, driver_name, track_name, class_name, car_name):
     global best_average_five
     
     last_lap_times.append(lap_time)
@@ -121,7 +129,7 @@ def process_new_lap(lap_time, driver_name, track_name, car_name):
         if best_average_five is None or average_five < best_average_five:
             best_average_five = average_five
             print(f"NOWY REKORD ŚREDNIEJ: {best_average_five:.3f} s!")
-            save_player_data_to_json(driver_name, track_name, car_name, best_average_five)
+            save_player_data_to_cloud(driver_name, track_name, class_name, car_name, best_average_five)
 
 if __name__ == "__main__":
     track_game_data()
