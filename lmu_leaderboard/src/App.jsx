@@ -48,19 +48,34 @@ useEffect(() => {
           
           // Handle improved lap times (upserts trigger UPDATE events)
           if (payload.eventType === 'UPDATE') {
-            return prevPlayers.map((player) => 
-              // Assumes you have an 'id' column as your primary key. 
-              // If not, match on name, track, and car.
-              player.id === payload.new.id ? payload.new : player
-            );
-          } 
-          
-          // Handle deleted records (if an admin removes a time)
-          if (payload.eventType === 'DELETE') {
-            return prevPlayers.filter((player) => player.id !== payload.old.id);
-          }
+            return prevPlayers.map((player) => {
+              // Jeśli używasz kolumny ID (najbezpieczniej):
+              if (player.id && payload.new.id) {
+                return player.id === payload.new.id ? payload.new : player;
+              }
+              
+              // Jeśli nie masz ID, sprawdzamy trójkę: Kierowca + Tor + Auto
+              const isExactSameSession = 
+                player.name === payload.new.name && 
+                player.track === payload.new.track && 
+                player.car === payload.new.car;
 
-          return prevPlayers;
+              return isExactSameSession ? payload.new : player;
+            });
+          }
+          if (payload.eventType === 'DELETE') {
+              return prevPlayers.filter((player) => {
+                // Przy usuwaniu używamy payload.old i odrzucamy z tablicy ten konkretny wpis
+                const isExactSameRecord = 
+                  player.name === payload.old.name && 
+                  player.track === payload.old.track && 
+                  player.car === payload.old.car;
+                  
+                return !isExactSameRecord;
+              });
+            }
+
+            return prevPlayers;
         });
       }
     )
